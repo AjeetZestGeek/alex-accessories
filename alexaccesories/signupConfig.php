@@ -66,60 +66,71 @@ class signupConfig{
        return $this->password = $password;
 
     }
-public function insertData(){
+	public function insertData(){
+		try{
+			$stm = $this->dbCnx->prepare("INSERT INTO users(username,emailaddress,phonenumber,role,password)values(?,?,?,?,?)");
+			$stm->execute([$this->username,$this->emailaddress,$this->phonenumber,$this->role,$this->password]);
+			echo"<script>alert('data saved successfully');document.location='allData.php'</script>";
+		}
+		catch(Exception $e){
+		 return $e->getMessage();	
+		}
+	}
+	public function fetchAll(){
+		try{
+			$stm = $this->dbCnx->prepare("SELECT * FROM users");
+			$stm->execute();
+			return $stm->fetchAll();
+
+		}
+		catch(Exception $e){
+		 return $e->getMessage();	
+		}
+
+	}
+	public function fetchone(){
+		try{
+
+			$stm = $this->dbCnx->prepare("SELECT * FROM users where id=?");
+			$stm->execute([$this->id]);
+			return $stm->fetchAll();
+
+		}
+		catch(Exception $e){
+		 return $e->getMessage();	
+		}
+
+	}
+	public function update(){
+		try{
+			$stm = $this->dbCnx->prepare("UPDATE users SET username=?,emailaddress=?,phonenumber=?,role=?,password=? WHERE id=?");
+			$stm->execute([$this->username,$this->emailaddress,$this->phonenumber,$this->role,$this->password,$this->id]);
+
+		}
+		catch(Exception $e){
+		 return $e->getMessage();	
+		}
+
+	}
+	public function delete(){
+		try{
+			$stm = $this->dbCnx->prepare("DELETE  FROM users WHERE id=?");
+			$stm->execute([$this->id]);
+			return $stm->fetchAll();
+		}
+		catch(Exception $e){
+		 return $e->getMessage();	
+		}
+
+	}
+	public function login(){
 	try{
-		$stm = $this->dbCnx->prepare("INSERT INTO users(username,emailaddress,phonenumber,role,password)values(?,?,?,?,?)");
-		$stm->execute([$this->username,$this->emailaddress,$this->phonenumber,$this->role,$this->password]);
-		echo"<script>alert('data saved successfully');document.location='allData.php'</script>";
-	}
-	catch(Exception $e){
-	 return $e->getMessage();	
-	}
-}
-public function fetchAll(){
-	try{
-		$stm = $this->dbCnx->prepare("SELECT * FROM users");
-		$stm->execute();
-		return $stm->fetchAll();
-
-	}
-	catch(Exception $e){
-	 return $e->getMessage();	
-	}
-
-}
-public function fetchone(){
-	try{
-
-		$stm = $this->dbCnx->prepare("SELECT * FROM users where id=?");
-		$stm->execute([$this->id]);
-		return $stm->fetchAll();
-
-	}
-	catch(Exception $e){
-	 return $e->getMessage();	
-	}
-
-}
-public function update(){
-	try{
-		$stm = $this->dbCnx->prepare("UPDATE users SET username=?,emailaddress=?,phonenumber=?,role=?,password=? WHERE id=?");
-		$stm->execute([$this->username,$this->emailaddress,$this->phonenumber,$this->role,$this->password,$this->id]);
-
-	}
-	catch(Exception $e){
-	 return $e->getMessage();	
-	}
-
-}
-public function delete(){
-	try{
-		$stm = $this->dbCnx->prepare("DELETE  FROM users WHERE id=?");
-		$stm->execute([$this->id]);
-		return $stm->fetchAll();
-		echo"<script>alert('data deleted successfully');document.location='allData.php'</script>";
-
-
+		$stm = $this->dbCnx->prepare("SELECT * FROM users WHERE (username = ? OR username = ?) AND password = ?");
+		$stm->execute([$this->username,$this->emailaddress,$this->password]);
+		if($stm->rowCount()>0){
+			$_SESSION['login_data'] = $stm;
+			echo"<script>alert('LogedIn successfully');document.location='allData.php'</script>";
+		}
 	}
 	catch(Exception $e){
 	 return $e->getMessage();	
