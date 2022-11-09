@@ -13,6 +13,7 @@
      <link rel="stylesheet" href="css/bootstrap.min.css">
      <link rel="stylesheet" href="css/font-awesome.min.css">
      <link rel="stylesheet" href="css/aos.css">
+     <link rel="stylesheet" href="css/style.css">
      <link rel="stylesheet" href="css/owl.carousel.min.css">
      <link rel="stylesheet" href="css/owl.theme.default.min.css">
 
@@ -48,6 +49,12 @@
                     </li>
                     <li class="nav-item">
                         <a href="contact.php" class="nav-link contact">Contact</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="alexaccesories/signup.php" class="nav-link">Sign Up</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="alexaccesories/login.php" class="nav-link admin-login">Admin Login</a>
                     </li>
                 </ul>
             </div>
