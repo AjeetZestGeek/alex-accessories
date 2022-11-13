@@ -129,7 +129,7 @@ class signupConfig{
 		$stm->execute([$this->username,$this->emailaddress,$this->password]);
 		if($stm->rowCount()>0){
 			$_SESSION['login_data'] = $stm;
-			echo"<script>alert('LogedIn successfully');document.location='allData.php'</script>";
+			echo"<script>alert('LogedIn successfully');document.location='allData.php';</script>";
 		}
 	}
 	catch(Exception $e){

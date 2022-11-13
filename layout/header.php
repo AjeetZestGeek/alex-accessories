@@ -1,3 +1,9 @@
+<?php 
+include 'alexaccesories/connection.php';
+if(!isset($_SESSION)){
+    session_start();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -22,7 +28,6 @@
 
 </head>
 <body>
-
      <!-- MENU BAR -->
     <nav class="navbar navbar-expand-lg position-relative">
         <div class="container">
@@ -50,12 +55,21 @@
                     <li class="nav-item">
                         <a href="contact.php" class="nav-link contact">Contact</a>
                     </li>
+                    <?php if(isset($_SESSION['login_data'])){ ?>
                     <li class="nav-item">
-                        <a href="alexaccesories/signup.php" class="nav-link">Sign Up</a>
+                        <a href="alexaccesories/logout.php" class="nav-link">Logout</a>
+                    </li>
+                    <?php }else{ ?>
+                    <li class="nav-item">
+                        <a href="signup.php" class="nav-link">Sign Up</a>
                     </li>
                     <li class="nav-item">
-                        <a href="alexaccesories/login.php" class="nav-link admin-login">Admin Login</a>
+                        <a href="login.php" class="nav-link">Login</a>
                     </li>
+                    <li class="nav-item admin-login-li">
+                        <a href="login.php" class="nav-link admin-login">Admin Login</a>
+                    </li>
+                <?php } ?>
                 </ul>
             </div>
         </div>

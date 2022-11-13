@@ -4,3 +4,14 @@
 a.nav-link.admin-login:hover {
 	opacity: 1;
 }
+.clearfix {
+	margin: 2%;
+}
+span.error-msg {
+    font-size: 12px;
+    color: red;
+}
+li.nav-item.admin-login-li {
+    margin-right: 0;
+    padding-left: 228px;
+}

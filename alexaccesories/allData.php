@@ -38,6 +38,14 @@ $all = $data->fetchAll();
             </tbody>
         </div>
     </table>
+    <script>
+    function checkdelete()
+    {
+        return confirm('Are you sure you want to delete this user');
+    }
+
+ </script>
+</div>
 <?php 
 include 'layout/footer.php';
 ?>
