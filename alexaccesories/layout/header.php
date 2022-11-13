@@ -1,9 +1,10 @@
 <?php 
-session_start();
+include 'connection.php';
+if(!isset($_SESSION)){
+  session_start();
+}
 if(isset($_SESSION['login_data'])&&$_SESSION['login_data'][0]['role']!='Admin'){
   echo"<script>alert('Access Denied!!!');document.location='../index.php';</script>";
-}else{
-  echo"<script>alert('Come back after login first!!!');document.location='logout.php';</script>";
 }
 ?>
 <!DOCTYPE html>
