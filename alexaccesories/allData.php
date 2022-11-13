@@ -1,8 +1,8 @@
 <?php
 include 'layout/header.php';
-require_once("signupConfig.php");
-$data = new signupConfig();
-$all = $data->fetchAll();
+$stm = $dbConn->prepare("SELECT * FROM users");
+$stm->execute();
+$all = $stm->fetchAll();
 ?>
 
     <div class="container">

@@ -65,7 +65,6 @@ if (isset($_POST['save'])) {
     <input class="form-control" type="text" name="phonenumber" maxlength="15" value="<?=isset($phonenumber)?$phonenumber:'';?>" placeholder="Phone Number">
     <span class='error-msg'><?=$phoneMsg;?></span><br>
 
-    <label for="role"> User Role</label>
     <input class="form-control" type="hidden" name="role" value="User" placeholder="Your role">
 
     <label for="password"> Password</label>
