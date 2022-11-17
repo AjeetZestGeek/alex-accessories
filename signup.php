@@ -16,6 +16,9 @@ if (isset($_POST['save'])) {
   if($emailaddress==''){
     $emailMsg = 'Please fill Email!!!';
     $allDone = false;
+  }else if (filter_var($_POST['emailaddress'], FILTER_VALIDATE_EMAIL) === FALSE){
+    $emailMsg = 'Please fill valid Email!!!';
+    $allDone = false;
   }
   $phonenumber = $_POST['phonenumber'];
   if($phonenumber==''){
