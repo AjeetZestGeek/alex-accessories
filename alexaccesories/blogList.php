@@ -8,7 +8,7 @@ if(isset($_GET['id'] )&& isset($_GET['req'])){
         $stm->execute([$id]);
     }
 }
-$stm = $dbConn->prepare("SELECT * FROM $tableName");
+$stm = $dbConn->prepare("SELECT $tableName.id as blogId,$tableName.title as blogTitle, blog_categary.title as categoryTitle, content, image, $tableName.created_date as blogCratedDate FROM $tableName JOIN blog_categary ON $tableName.category_id = blog_categary.id");
 $stm->execute();
 $all = $stm->fetchAll();
 ?>
@@ -32,15 +32,15 @@ $all = $stm->fetchAll();
                 foreach($all as $key => $val){
                 	?>
                 <tr>
-                   	<th><?=$val['id']?></th>
-                    <th><?=$val['category_id']?></th>
-                   	<th><?=$val['title']?></th>
-                    <th><?=$val['image']?></th>
+                   	<th><?=$val['blogId']?></th>
+                    <th><?=$val['categoryTitle']?></th>
+                   	<th><?=$val['blogTitle']?></th>
+                    <th><img src="<?=$val['image']?>" height='100' width = '150'></th>
                     <th><?=$val['content']?></th>
-                   	<th><?=$val['created_date']?></th>
+                   	<th><?=$val['blogCratedDate']?></th>
            		    <td>
-                        <a class="btn btn-info" href="addBlog.php?id=<?=$val['id']; ?>">Edit</a>&nbsp
-                        <a class="btn btn-danger" href="?id=<?=$val['id']; ?>&req=delete" onclick='return checkdelete()'>Delete</a>
+                        <a class="btn btn-info" href="addBlog.php?id=<?=$val['blogId'].'&title='.$final = preg_replace('#[ -]+#', '-', $val['blogTitle']); ?>">Edit</a>&nbsp
+                        <a class="btn btn-danger" href="?id=<?=$val['blogId']; ?>&req=delete" onclick='return checkdelete()'>Delete</a>
                     </td>
            	   <?php
                 }

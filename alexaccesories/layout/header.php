@@ -1,4 +1,5 @@
 <?php 
+error_reporting(0);
 include 'connection.php';
 if(!isset($_SESSION)){
   session_start();
