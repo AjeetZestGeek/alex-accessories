@@ -5,6 +5,9 @@ if(!isset($_SESSION)){
 }
 if(isset($_SESSION['login_data'])&&$_SESSION['login_data'][0]['role']!='Admin'){
   echo"<script>alert('Access Denied!!!');document.location='../index.php';</script>";
+}else{
+  $userdata = $_SESSION['login_data'][0];
+  $userId = $userdata['id'];
 }
 ?>
 <!DOCTYPE html>
@@ -33,6 +36,12 @@ if(isset($_SESSION['login_data'])&&$_SESSION['login_data'][0]['role']!='Admin'){
               <ul class="navbar-nav me-auto">
                 <li class="nav-item">
                   <a class="nav-link" href="index.php">Home</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="blogCategoryList.php">Blog Category</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="blogList.php">Post</a>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link" href="allData.php">User</a>
