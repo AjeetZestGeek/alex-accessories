@@ -18,12 +18,12 @@ if(isset($_POST['submit'])){
 		if($_POST['submit']=='save'){
 			$stm = $dbConn->prepare("INSERT INTO blog_categary (title,created_date,created_by_id,status)VALUES(?,?,?,?)");
 			$stm->execute([$title,date('Y-m-d h:t:s'),$userId,1]);
-			echo"<script>alert('Data updated successfully');document.location='blogCategoryList.php'</script>";
+			echo"<script>document.location='blogCategoryList.php'</script>";
 		}
 		if($_POST['submit']=='update'){
 		  $stm = $dbConn->prepare("UPDATE blog_categary SET title=?, updated_date = ? WHERE id=?");
 		  $stm->execute([$title,date('Y-m-d h:t:s'),$id]);
-		  echo"<script>alert('Data updated successfully');document.location='blogCategoryList.php'</script>";
+		  echo"<script>document.location='blogCategoryList.php'</script>";
 		}
 	}
 }

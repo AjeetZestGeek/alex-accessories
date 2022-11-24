@@ -21,9 +21,9 @@ if(isset($_POST['login'])){
     if($stm->rowCount()>0){
       $_SESSION['login_data'] = $stm->fetchAll();
       if($_SESSION['login_data'][0]['role']=='Admin'){
-        echo"<script>alert('LogedIn successfully');document.location='alexaccesories/index.php';</script>";
+        echo"<script>document.location='alexaccesories/index.php';</script>";
       }else{
-        echo"<script>alert('LogedIn successfully');document.location='index.php';</script>";
+        echo"<script>document.location='index.php';</script>";
       }
     }else{
       echo"<script>alert('Username/Email OR Password wrong');document.location='login.php';</script>";

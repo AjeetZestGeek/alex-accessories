@@ -45,7 +45,7 @@ if (isset($_POST['save'])) {
     }else{
       $sql = $dbConn->prepare("INSERT INTO users(username,emailaddress,phonenumber,role,password)values(?,?,?,?,?)");
       $sql->execute([$username,$emailaddress,$phonenumber,$role,$password]);
-      echo"<script>alert('SignUp Successfully');document.location='index.php'</script>";
+      echo"<script>document.location='index.php'</script>";
       $_SESSION['userData'] = $sql;
     }
   }
