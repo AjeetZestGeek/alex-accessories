@@ -34,7 +34,7 @@ if(isset($_GET['id'])){
     if($allDone){
       $stm = $dbConn->prepare("UPDATE users SET username=?,emailaddress=?,phonenumber=?,role=? WHERE id=?");
       $stm->execute([$username,$emailaddress,$phonenumber,$role,$id]);
-      echo"<script>alert('data updated successfully');document.location='allData.php'</script>";
+      echo"<script>document.location='allData.php'</script>";
     }
   }
 }

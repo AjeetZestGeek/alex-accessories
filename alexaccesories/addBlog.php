@@ -83,12 +83,12 @@ if(isset($_POST['submit'])){
 		if($_POST['submit']=='save'){
 			$stm = $dbConn->prepare("INSERT INTO $tableName (category_id,title,image,content,created_date,created_by_id,status)VALUES(?,?,?,?,?,?,?)");
 			$stm->execute([$category_id,$title,$target_file,$content,date('Y-m-d h:t:s'),$userId,1]);
-			echo"<script>alert('Data updated successfully');document.location='blogList.php'</script>";
+			echo"<script>document.location='blogList.php'</script>";
 		}
 		if($_POST['submit']=='update'){
 		  $stm = $dbConn->prepare("UPDATE $tableName SET category_id = ?, title = ?,image = ?, content = ?, updated_date = ? WHERE id=?");
 		  $stm->execute([$category_id,$title,$target_file,$content,date('Y-m-d h:t:s'),$id]);
-		  echo"<script>alert('Data updated successfully');document.location='blogList.php'</script>";
+		  echo"<script>document.location='blogList.php'</script>";
 		}
 	}
 }
