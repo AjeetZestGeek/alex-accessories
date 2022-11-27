@@ -1,6 +1,6 @@
 <?php
 include 'layout/header.php';
-$limit = 5;
+$limit = 1;
 $pageNo = 0;
 if (isset($_GET['page-no'])) {
     $pageNo = $_GET['page-no']-1;
@@ -86,13 +86,18 @@ $totalPages = ceil($pagi->rowCount()/$limit);
     <nav aria-label="Page navigation example">
       <ul class="pagination">
         <li class="page-item"><a class="page-link" href="?page-no=<?=(isset($_GET['page-no'])&&$_GET['page-no']>1)?$_GET['page-no']-1:1?>&cat=<?=isset($_GET['cat'])?$_GET['cat']:''?>">Previous</a></li>
-        <li class="page-item"><a class="page-link" href="?page-no=1&cat=<?=isset($_GET['cat'])?$_GET['cat']:''?>">1</a></li>
-        <?php for ($i=2; $i < $totalPages && $i < 5; $i++) { ?>
-        <li class="page-item"><a class="page-link" href="?page-no=<?=$i;?>&cat=<?=isset($_GET['cat'])?$_GET['cat']:''?>"><?=$i;?></a></li>
+
+        <li class="page-item"><a class="page-link <?=(isset($_GET['page-no'])&&$_GET['page-no']==1)?'active':''?>" href="?page-no=1&cat=<?=isset($_GET['cat'])?$_GET['cat']:''?>">1</a></li>...
+
+    <?php for ($i=((isset($_GET['page-no'])&&$_GET['page-no']-2>1)?$_GET['page-no']-2:2); $i < $totalPages && $i < (isset($_GET['page-no'])?$_GET['page-no']+3:3); $i++) { ?>
+
+        <li class="page-item"><a class="page-link <?=(isset($_GET['page-no'])&&$_GET['page-no']==$i)?'active':''?>" href="?page-no=<?=$i;?>&cat=<?=isset($_GET['cat'])?$_GET['cat']:''?>"><?=$i;?></a></li>
+
     <?php } 
     if($totalPages!=1){
     ?>
-        <li class="page-item"><a class="page-link" href="?page-no=<?=$totalPages;?>&cat=<?=isset($_GET['cat'])?$_GET['cat']:''?>"><?=$totalPages;?></a></li>
+        ...<li class="page-item"><a class="page-link <?=(isset($_GET['page-no'])&&$_GET['page-no']==$totalPages)?'active':''?>" href="?page-no=<?=$totalPages;?>&cat=<?=isset($_GET['cat'])?$_GET['cat']:''?>"><?=$totalPages;?></a></li>
+
     <?php } ?>
         <li class="page-item"><a class="page-link" href="?page-no=<?=(isset($_GET['page-no'])&&$_GET['page-no']<$totalPages)?$_GET['page-no']+1:$totalPages?>&cat=<?=isset($_GET['cat'])?$_GET['cat']:''?>">Next</a></li>
       </ul>
