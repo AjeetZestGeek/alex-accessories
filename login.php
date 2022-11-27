@@ -15,7 +15,7 @@ if(isset($_POST['login'])){
     $allDone = false;
   }
   if($allDone){
-    $password = md5($password);
+    $password = md5('alex'.$password);
     $stm = $dbConn->prepare("SELECT * FROM users WHERE (username = ? OR emailaddress = ?) AND password = ?");
     $stm->execute([$username,$username,$password]);
     if($stm->rowCount()>0){
