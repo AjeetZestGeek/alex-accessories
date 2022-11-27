@@ -10,7 +10,7 @@ CREATE TABLE users(
 	status INT(1)
 );
 
-INSERT INTO `users` (`id`, `username`, `emailaddress`, `phonenumber`, `role`, `password`, `status`) VALUES (NULL, 'admin', 'admin@gmail.com', '+129876543210', 'Admin', '0192023a7bbd73250516f069df18b500', '1');
+INSERT INTO `users` (`id`, `username`, `emailaddress`, `phonenumber`, `role`, `password`, `status`) VALUES (NULL, 'admin', 'admin@gmail.com', '+129876543210', 'Admin', '306f1122c842b0cc72c172e21dfdb911', '1');
 -- Username = admin
 -- password = admin123
 
