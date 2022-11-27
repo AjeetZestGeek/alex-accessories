@@ -1,5 +1,11 @@
 <?php
 include 'layout/header.php';
+$limit = 5;
+$pageNo = 0;
+if (isset($_GET['page-no'])) {
+    $pageNo = $_GET['page-no']-1;
+}
+$offset = $limit*$pageNo;
 $tableName = 'blog_post';
 if(isset($_GET['id'] )&& isset($_GET['req'])){
     if($_GET['req']=="delete"){
@@ -8,9 +14,19 @@ if(isset($_GET['id'] )&& isset($_GET['req'])){
         $stm->execute([$id]);
     }
 }
-$stm = $dbConn->prepare("SELECT $tableName.id as blogId,$tableName.title as blogTitle, blog_categary.title as categoryTitle, content, image, $tableName.created_date as blogCratedDate FROM $tableName JOIN blog_categary ON $tableName.category_id = blog_categary.id");
+
+$sql = "SELECT $tableName.id as blogId,$tableName.title as blogTitle, blog_categary.title as categoryTitle, content, image, $tableName.created_date as blogCratedDate FROM $tableName JOIN blog_categary ON $tableName.category_id = blog_categary.id";
+if(isset($_GET['cat'])&&$_GET['cat']!=''){
+    $catId = $_GET['cat'];
+    $sql .= " WHERE blog_categary.id = $catId";
+}
+$sqlPaginated = $sql . " LIMIT $limit OFFSET $offset"; 
+$stm = $dbConn->prepare($sqlPaginated);
 $stm->execute();
 $all = $stm->fetchAll();
+$pagi = $dbConn->prepare($sql);
+$pagi->execute();
+$totalPages = ceil($pagi->rowCount()/$limit);
 ?>
 
     <div class="container">
@@ -18,13 +34,30 @@ $all = $stm->fetchAll();
             <div class="container">
     		<thead>
         		<tr>
-        			<th><mark>Id</mark></th>
-                    <th><mark>Category</mark></th>
-        			<th><mark>Title</mark></th>
-        			<th><mark>Image</mark></th>
-                    <th><mark>Content</mark></th>
-                    <th><mark>Created At</mark></th>
-                    <th><mark>Action</mark></th>
+        			<th>Id</th>
+                    <th>
+                        <div class="dropdown">
+                          <button class="btn btn-light dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                            Category
+                          </button>
+                          <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                            <a class="dropdown-item" href="?page-no=<?=isset($_GET['page-no'])?$_GET['page-no']:1?>">All</a>
+                            <?php 
+                            $sql = $dbConn->prepare("SELECT * FROM blog_categary");
+                            $sql->execute();
+                            $datas = $sql->fetchAll();
+                            foreach($datas as $data){
+                            ?>
+                            <a class="dropdown-item" href="?page-no=<?=isset($_GET['page-no'])?$_GET['page-no']:1?>&cat=<?=$data['id'];?>"><?=$data['title'];?></a>
+                            <?php } ?>
+                          </ul>
+                        </div>
+                    </th>
+        			<th>Title</th>
+        			<th>Image</th>
+                    <th>Content</th>
+                    <th>Created At</th>
+                    <th>Action</th>
         		</tr>
     	   </thead>
     		<tbody>
@@ -50,6 +83,20 @@ $all = $stm->fetchAll();
             </tbody>
         </div>
     </table>
+    <nav aria-label="Page navigation example">
+      <ul class="pagination">
+        <li class="page-item"><a class="page-link" href="?page-no=<?=(isset($_GET['page-no'])&&$_GET['page-no']>1)?$_GET['page-no']-1:1?>&cat=<?=isset($_GET['cat'])?$_GET['cat']:''?>">Previous</a></li>
+        <li class="page-item"><a class="page-link" href="?page-no=1&cat=<?=isset($_GET['cat'])?$_GET['cat']:''?>">1</a></li>
+        <?php for ($i=2; $i < $totalPages && $i < 5; $i++) { ?>
+        <li class="page-item"><a class="page-link" href="?page-no=<?=$i;?>&cat=<?=isset($_GET['cat'])?$_GET['cat']:''?>"><?=$i;?></a></li>
+    <?php } 
+    if($totalPages!=1){
+    ?>
+        <li class="page-item"><a class="page-link" href="?page-no=<?=$totalPages;?>&cat=<?=isset($_GET['cat'])?$_GET['cat']:''?>"><?=$totalPages;?></a></li>
+    <?php } ?>
+        <li class="page-item"><a class="page-link" href="?page-no=<?=(isset($_GET['page-no'])&&$_GET['page-no']<$totalPages)?$_GET['page-no']+1:$totalPages?>&cat=<?=isset($_GET['cat'])?$_GET['cat']:''?>">Next</a></li>
+      </ul>
+    </nav>
     <script>
     function checkdelete()
     {
