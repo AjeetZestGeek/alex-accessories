@@ -1,6 +1,6 @@
 <?php
 include 'layout/header.php';
-$limit = 1;
+$limit = 5;
 $pageNo = 0;
 if (isset($_GET['page-no'])) {
     $pageNo = $_GET['page-no']-1;
