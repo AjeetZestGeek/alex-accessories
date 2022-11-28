@@ -95,10 +95,10 @@ if(isset($_POST['submit'])){
 ?>
 <form class="update-form" action="" method="post" enctype="multipart/form-data">
   <div class="container"  style="width:90%;">
-    <h1><?=isset($val['title'])?'Update':'Add';?> Category</h1>
+    <h1><?=isset($val['title'])?'Update':'Add';?> Post</h1>
     <hr>
-    <label for="title">Title</label>
-    <select class="form-select" name="category_id">
+    <label for="category">category</label>
+    <select class="form-select" name="category_id" id="category">
     	<?php 
     	$stm = $dbConn->prepare("SELECT * FROM blog_categary");
 		  $stm->execute([$id]);
