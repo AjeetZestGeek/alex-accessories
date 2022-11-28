@@ -101,7 +101,7 @@ if(isset($_POST['submit'])){
     <select class="form-select" name="category_id" id="category">
     	<?php 
     	$stm = $dbConn->prepare("SELECT * FROM blog_categary");
-		  $stm->execute([$id]);
+		  $stm->execute();
 		  $values = $stm->fetchAll();
 		  foreach($values as $value){
 		  ?>
