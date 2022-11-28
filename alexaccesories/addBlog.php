@@ -97,7 +97,7 @@ if(isset($_POST['submit'])){
   <div class="container"  style="width:90%;">
     <h1><?=isset($val['title'])?'Update':'Add';?> Post</h1>
     <hr>
-    <label for="category">category</label>
+    <label for="category">Category</label>
     <select class="form-select" name="category_id" id="category">
     	<?php 
     	$stm = $dbConn->prepare("SELECT * FROM blog_categary");
