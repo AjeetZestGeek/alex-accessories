@@ -31,63 +31,64 @@ if(isset($_POST['submit'])){
 	if (!file_exists($target_dir)) {
 		mkdir($target_dir);
 	}
-	$basename = basename($_FILES["image"]["name"]);
-	$uploadOk = 1;
-	$imageFileType = strtolower(pathinfo($basename,PATHINFO_EXTENSION));
-	$target_file = $target_dir . $title . strtotime(date('Y-m-d h:m:s')) . '.' . $imageFileType;
+	$imageProcess = 0;
+	 if(is_array($_FILES)) {
+	     $fileName = $_FILES['image']['tmp_name'];
+	     $sourceProperties = getimagesize($fileName);
+	     $resizeFileName = time();
+	     $uploadPath = "./uploads/";
+	     if(!file_exists($uploadPath)){
+	     	mkdir($uploadPath);
+	     }
+	     $fileExt = pathinfo($_FILES['image']['name'], PATHINFO_EXTENSION);
+	     $uploadImageType = $sourceProperties[2];
+	     $sourceImageWidth = $sourceProperties[0];
+	     $sourceImageHeight = $sourceProperties[1];
+	     switch ($uploadImageType) {
+	         case IMAGETYPE_JPEG:
+	             $resourceType = imagecreatefromjpeg($fileName); 
+	             $imageLayer = resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight);
+	             imagejpeg($imageLayer,$uploadPath."thump_".$resizeFileName.'.'. $fileExt);
+	             break;
 
-	// Check if image file is a actual image or fake image
-	if(isset($_POST["submit"])) {
-	  $check = getimagesize($_FILES["image"]["tmp_name"]);
-	  if($check !== false) {
-	    $allDone = TRUE;
-	  } else {
-	    $imageMsg = "File is not an image.";
-	    $allDone = false;
-	  }
-	}
+	         case IMAGETYPE_GIF:
+	             $resourceType = imagecreatefromgif($fileName); 
+	             $imageLayer = resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight);
+	             imagegif($imageLayer,$uploadPath."thump_".$resizeFileName.'.'. $fileExt);
+	             break;
 
-	// Check if file already exists
-	if (file_exists($target_file)) {
-	  $imageMsg = "Sorry, file already exists.";
-	  $allDone = false;
-	}
+	         case IMAGETYPE_PNG:
+	             $resourceType = imagecreatefrompng($fileName); 
+	             $imageLayer = resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight);
+	             imagepng($imageLayer,$uploadPath."thump_".$resizeFileName.'.'. $fileExt);
+	             break;
 
-	// Check file size
-	if ($_FILES["image"]["size"] > 50000000) {
-	  $imageMsg = "Sorry, your file is too large.";
-	  $allDone = false;
-	}
+	         case IMAGETYPE_JPG:
+	             $resourceType = imagecreatefrompng($fileName); 
+	             $imageLayer = resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight);
+	             imagepng($imageLayer,$uploadPath."thump_".$resizeFileName.'.'. $fileExt);
+	             break;
 
-	// Allow certain file formats
-	if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
-	&& $imageFileType != "gif" ) {
-	  $imageMsg = "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
-	  $allDone = false;
-	}
-
-	// Check if $uploadOk is set to 0 by an error
-	if ($uploadOk == 0) {
-	  $imageMsg = "Sorry, your file was not uploaded.";
-	// if everything is ok, try to upload file
-	} else {
-	  if (!move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-	    $imageMsg = "Sorry, there was an error uploading your file.";
-	  }
-	}
+	         default:
+	             $imageProcess = 0;
+	             break;
+	     }
+	     move_uploaded_file($fileName, $uploadPath. $resizeFileName. ".". $fileExt);
+	     $imageProcess = 1;
+	 }
 	// if($image == ''){
 	//   $imageMsg = "Image name cannot be blank";
 	//   $allDone = false;
 	// }
-	if($allDone){
+	if($allDone && $imageProcess){
 		if($_POST['submit']=='save'){
 			$stm = $dbConn->prepare("INSERT INTO $tableName (category_id,title,image,content,created_date,created_by_id,status)VALUES(?,?,?,?,?,?,?)");
-			$stm->execute([$category_id,$title,$target_file,$content,date('Y-m-d h:t:s'),$userId,1]);
+			$stm->execute([$category_id,$title,$uploadPath."thump_".$resizeFileName.'.'. $fileExt,$content,date('Y-m-d h:t:s'),$userId,1]);
 			echo"<script>document.location='blogList.php'</script>";
 		}
 		if($_POST['submit']=='update'){
 		  $stm = $dbConn->prepare("UPDATE $tableName SET category_id = ?, title = ?,image = ?, content = ?, updated_date = ? WHERE id=?");
-		  $stm->execute([$category_id,$title,$target_file,$content,date('Y-m-d h:t:s'),$id]);
+		  $stm->execute([$category_id,$title,$uploadPath."thump_".$resizeFileName.'.'. $fileExt,$content,date('Y-m-d h:t:s'),$id]);
 		  echo"<script>document.location='blogList.php'</script>";
 		}
 	}
