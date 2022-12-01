@@ -48,7 +48,7 @@ $totalPages = ceil($pagi->rowCount()/$limit);
                             $datas = $sql->fetchAll();
                             foreach($datas as $data){
                             ?>
-                            <a class="dropdown-item" href="?page-no=<?=isset($_GET['page-no'])?$_GET['page-no']:1?>&cat=<?=$data['id'];?>"><?=$data['title'];?></a>
+                            <a class="dropdown-item" href="?page-no=<?=isset($_GET['page-no'])?$_GET['page-no']:1?>&cat=<?=$data['id'];?>&category=<?=$data['title'];?>"><?=$data['title'];?></a>
                             <?php } ?>
                           </ul>
                         </div>
@@ -68,7 +68,7 @@ $totalPages = ceil($pagi->rowCount()/$limit);
                    	<th><?=$val['blogId']?></th>
                     <th><?=$val['categoryTitle']?></th>
                    	<th><?=$val['blogTitle']?></th>
-                    <th><img src="<?=$val['image']?>" height='100' width = '150'></th>
+                    <th><img src="<?=$val['image']?>"></th>
                     <th><?=$val['content']?></th>
                    	<th><?=$val['blogCratedDate']?></th>
            		    <td>
