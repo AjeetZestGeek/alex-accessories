@@ -4,6 +4,8 @@ $tableName = 'blog_post';
 $titleMsg = '';
 $categoryIdMsg = '';
 $contentMsg = '';
+$imageMsg = '';
+$image = '';
 $allDone = true;
 if(isset($_GET['id'])){
   $id=$_GET['id'];
@@ -27,12 +29,8 @@ if(isset($_POST['submit'])){
 	  $contentMsg = "Content cannot be blank";
 	  $allDone = false;
 	}
-	$target_dir = "uploads/";
-	if (!file_exists($target_dir)) {
-		mkdir($target_dir);
-	}
 	$imageProcess = 0;
-	 if(is_array($_FILES)) {
+	 if(is_array($_FILES)&&!empty($_FILES['image']['tmp_name'])) {
 	     $fileName = $_FILES['image']['tmp_name'];
 	     $sourceProperties = getimagesize($fileName);
 	     $resizeFileName = time();
@@ -49,46 +47,53 @@ if(isset($_POST['submit'])){
 	             $resourceType = imagecreatefromjpeg($fileName); 
 	             $imageLayer = resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight);
 	             imagejpeg($imageLayer,$uploadPath."thump_".$resizeFileName.'.'. $fileExt);
+	             $imageProcess = 1;
 	             break;
 
 	         case IMAGETYPE_GIF:
 	             $resourceType = imagecreatefromgif($fileName); 
 	             $imageLayer = resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight);
 	             imagegif($imageLayer,$uploadPath."thump_".$resizeFileName.'.'. $fileExt);
+	             $imageProcess = 1;
 	             break;
 
 	         case IMAGETYPE_PNG:
 	             $resourceType = imagecreatefrompng($fileName); 
 	             $imageLayer = resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight);
 	             imagepng($imageLayer,$uploadPath."thump_".$resizeFileName.'.'. $fileExt);
+	             $imageProcess = 1;
 	             break;
 
 	         case IMAGETYPE_JPG:
 	             $resourceType = imagecreatefrompng($fileName); 
 	             $imageLayer = resizeImage($resourceType,$sourceImageWidth,$sourceImageHeight);
 	             imagepng($imageLayer,$uploadPath."thump_".$resizeFileName.'.'. $fileExt);
+	             $imageProcess = 1;
 	             break;
 
 	         default:
 	             $imageProcess = 0;
 	             break;
-	     }
-	     move_uploaded_file($fileName, $uploadPath. $resizeFileName. ".". $fileExt);
-	     $imageProcess = 1;
+	     	}
+	     	move_uploaded_file($fileName, $path. $resizeFileName. ".". $fileExt);
+	      if($imageProcess == 0 && $_POST['submit']=='update'){
+				  $image = $val['image'];
+				  $imageProcess = 1;
+				}else{
+					$image = $uploadPath."thump_".$resizeFileName.'.'. $fileExt;
+					$imageProcess = 1;
+				}
 	 }
-	// if($image == ''){
-	//   $imageMsg = "Image name cannot be blank";
-	//   $allDone = false;
-	// }
-	if($allDone && $imageProcess){
+	
+	if($allDone){
 		if($_POST['submit']=='save'){
 			$stm = $dbConn->prepare("INSERT INTO $tableName (category_id,title,image,content,created_date,created_by_id,status)VALUES(?,?,?,?,?,?,?)");
-			$stm->execute([$category_id,$title,$uploadPath."thump_".$resizeFileName.'.'. $fileExt,$content,date('Y-m-d h:t:s'),$userId,1]);
+			$stm->execute([$category_id,$title,$image,$content,date('Y-m-d h:t:s'),$userId,1]);
 			echo"<script>document.location='blogList.php'</script>";
 		}
 		if($_POST['submit']=='update'){
 		  $stm = $dbConn->prepare("UPDATE $tableName SET category_id = ?, title = ?,image = ?, content = ?, updated_date = ? WHERE id=?");
-		  $stm->execute([$category_id,$title,$uploadPath."thump_".$resizeFileName.'.'. $fileExt,$content,date('Y-m-d h:t:s'),$id]);
+		  $stm->execute([$category_id,$title,$image,$content,date('Y-m-d h:t:s'),$id]);
 		  echo"<script>document.location='blogList.php'</script>";
 		}
 	}
@@ -116,7 +121,7 @@ if(isset($_POST['submit'])){
     <span class="error-msg"><?=$titleMsg;?></span><br>
 
     <label for="image">Image</label>
-    <input class="form-control" type="file" name="image" placeholder="Enter blog category" value="<?=isset($val['image'])?$val['image']:'';?>" accept="image/*">
+    <input class="form-control" type="file" name="image" placeholder="Enter blog category">
     <span class="error-msg"><?=$imageMsg;?></span>
     <br>
 
