@@ -36,7 +36,7 @@ $all = $stm->fetchAll();
                    	<th><?=$val['phonenumber']?></th>
                     <th><?=$val['role']?></th>
            		    <td>
-                        <a class="btn btn-info" href="update.php?id=<?=$val['id']; ?>">Edit</a>&nbsp
+                        <a class="btn btn-info" href="update.php?id=<?=$val['id']; ?>&username=<?=$val['username']?>">Edit</a>&nbsp
                         <a class="btn btn-danger" href="?id=<?=$val['id']; ?>&req=delete" onclick='return checkdelete()'>Delete</a>
                     </td>
            	   <?php

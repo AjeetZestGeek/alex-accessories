@@ -65,10 +65,10 @@ $totalPages = ceil($pagi->rowCount()/$limit);
                 foreach($all as $key => $val){
                 	?>
                 <tr>
-                   	<th><a href="blogView.php?id=<?=$val['blogId']?>&title=<?=$final = preg_replace('#[ -]+#', '-', $val['blogTitle']); ?>"><?=$val['blogId']?></a></th>
+                   	<th><a class="remove-anchor-style" href="blogView.php?id=<?=$val['blogId']?>&title=<?=$final = preg_replace('#[ -]+#', '-', $val['blogTitle']); ?>"><?=$val['blogId']?></a></th>
                     <th><?=$val['categoryTitle']?></th>
-                   	<th><a href="blogView.php?id=<?=$val['blogId']?>&title=<?=$final = preg_replace('#[ -]+#', '-', $val['blogTitle']); ?>"><?=$val['blogTitle']?></a></th>
-                    <th><a href="blogView.php?id=<?=$val['blogId']?>&title=<?=$final = preg_replace('#[ -]+#', '-', $val['blogTitle']); ?>"><img src="<?=$val['image']?>"></a></th>
+                   	<th><a class="remove-anchor-style" href="blogView.php?id=<?=$val['blogId']?>&title=<?=$final = preg_replace('#[ -]+#', '-', $val['blogTitle']); ?>"><?=$val['blogTitle']?></a></th>
+                    <th><a class="remove-anchor-style" href="blogView.php?id=<?=$val['blogId']?>&title=<?=$final = preg_replace('#[ -]+#', '-', $val['blogTitle']); ?>"><img src="<?=$val['image']?>"></a></th>
                    	<th><?=$val['blogCratedDate']?></th>
            		    <td>
                         <a class="btn btn-info" href="addBlog.php?id=<?=$val['blogId'].'&title='.$final = preg_replace('#[ -]+#', '-', $val['blogTitle']); ?>">Edit</a>&nbsp
@@ -78,7 +78,7 @@ $totalPages = ceil($pagi->rowCount()/$limit);
                 }
                 ?>
                 </tr>
-                <a  class="btn btn-info" href="addBlog.php">Add New</a>
+                <a  class="btn btn-info m-2" href="addBlog.php">Add New</a>
             </tbody>
         </div>
     </table>

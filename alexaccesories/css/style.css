@@ -2,3 +2,26 @@ span.error-msg {
     font-size: 12px;
     color: red;
 }
+.blog-image{
+    max-height: 80%;
+    max-width: 80%;
+    margin: 20px;
+}
+.right-item {
+    float: right;
+    margin: 50px;
+}
+.main{
+    margin: 5px 100px;
+    border: solid;
+}
+#back-btn{
+    margin: 40px 100px;
+}
+.main-content{
+    text-align: center;
+}
+.remove-anchor-style{
+    color: black;
+    text-decoration: none;
+}
