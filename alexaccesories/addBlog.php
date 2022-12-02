@@ -75,7 +75,7 @@ if(isset($_POST['submit'])){
 	             $imageProcess = 0;
 	             break;
 	     	}
-	     	move_uploaded_file($fileName, $path. $resizeFileName. ".". $fileExt);
+	     	move_uploaded_file($fileName, $uploadPath. $resizeFileName. ".". $fileExt);
 	      if($imageProcess == 0 && $_POST['submit']=='update'){
 				  $image = $val['image'];
 				  $imageProcess = 1;
