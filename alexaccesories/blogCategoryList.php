@@ -32,14 +32,14 @@ $all = $stm->fetchAll();
                    	<th><?=$val['title']?></th>
                    	<th><?=$val['created_date']?></th>
            		    <td>
-                        <a class="btn btn-info" href="addBlogCategory.php?id=<?=$val['id']; ?>">Edit</a>&nbsp
+                        <a class="btn btn-info" href="addBlogCategory.php?id=<?=$val['id'];?>&title=<?=$val['title']?>">Edit</a>&nbsp
                         <a class="btn btn-danger" href="?id=<?=$val['id']; ?>&req=delete" onclick='return checkdelete()'>Delete</a>
                     </td>
            	   <?php
                 }
                 ?>
                 </tr>
-                <a  class="btn btn-info" href="addBlogCategory.php">Add New</a>
+                <a  class="btn btn-info m-2" href="addBlogCategory.php">Add New</a>
             </tbody>
         </div>
     </table>

@@ -77,12 +77,15 @@ if(isset($_POST['submit'])){
 	     	}
 	     	move_uploaded_file($fileName, $uploadPath. $resizeFileName. ".". $fileExt);
 	      if($imageProcess == 0 && $_POST['submit']=='update'){
-				  $image = $val['image'];
+				  $image = $_POST['old-image'];
 				  $imageProcess = 1;
 				}else{
 					$image = $uploadPath."thump_".$resizeFileName.'.'. $fileExt;
 					$imageProcess = 1;
 				}
+	 }
+	 if($imageProcess == 0){
+	 	$image = $_POST['old-image'];
 	 }
 	
 	if($allDone){
@@ -122,6 +125,7 @@ if(isset($_POST['submit'])){
 
     <label for="image">Image</label>
     <input class="form-control" type="file" name="image" placeholder="Enter blog category">
+    <input class="form-control" type="hidden" name="old-image" value="<?=isset($val['image'])?$val['image']:'';?>">
     <span class="error-msg"><?=$imageMsg;?></span>
     <br>
 
