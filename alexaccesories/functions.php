@@ -14,4 +14,12 @@ function resizeImage($resourceType,$image_width,$image_height,$resizeWidth = 150
     imagecopyresampled($imageLayer,$resourceType,0,0,0,0,$resizeWidth,$resizeHeight, $image_width,$image_height);
     return $imageLayer;
 }
+
+function saltPassword($password){
+    $new_pass = $password;
+    for ($i=0; $i < strlen($password); $i++) { 
+        $new_pass = md5($new_pass.'alex'.md5($new_pass));
+    }
+    return $new_pass;
+}
 ?>
