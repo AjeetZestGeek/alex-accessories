@@ -11,7 +11,7 @@ $data = $stm->fetchAll()[0];
 	<div class="row main-heading">
 		<div class="col-lg-6 col-md-6 col-sm-12 container">
 			<img class="blog-image" src="uploads/<?=explode('_', $data['image'])[1]?>">
-			<button class="btn btn-danger" value="<?=$data['image'];?>" onclick="confirm('Are you sure to delete?')">Delete</button>
+			<button class="btn btn-danger main-heading" value="<?=$data['image'];?>" onclick="confirm('Are you sure to delete?')">Delete</button>
 		</div>
 		<div class="col-lg-6 col-md-6 col-sm-12">
 			<div class="right-item">

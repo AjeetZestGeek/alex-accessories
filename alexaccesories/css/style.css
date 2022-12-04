@@ -28,16 +28,16 @@ span.error-msg {
 
 
 /* Container needed to position the button. Adjust the width as needed */
-.container {
+.col-lg-6.col-md-6.col-sm-12.container {
   position: relative;
   width: 50%;
 }
 
 /* Style the button and place it in the middle of the container/image */
-.container .btn {
+.container .btn.btn-danger.main-heading {
   position: absolute;
-  top: 12%;
-  left: 67.5%;
+  top: 92%;
+  left: 37.5%;
   transform: translate(-50%, -50%);
   -ms-transform: translate(-50%, -50%);
   font-size: 16px;
