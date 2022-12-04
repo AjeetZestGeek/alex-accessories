@@ -12,18 +12,30 @@
       <div class="col-lg-12 col-12 py-5 mt-5 mb-3 text-center">
         <h1 class="mb-4" data-aos="fade-up">Digital Latest Blog</h1>
       </div>
+      <?php  
+      $catId = $allCat[0]['id'];
+      $sqlBlog = "SELECT * FROM `blog_post` WHERE `category_id` = $catId ORDER BY `id` DESC LIMIT 1";
+      $stmBlog = $dbConn->prepare($sqlBlog);
+      $stmBlog->execute();
+      $allBlog = $stmBlog->fetchAll()[0];
+      ?>
       <div class="col-lg-7 col-md-7 col-12 mb-4">
         <div class="blog-header" data-aos="fade-up" data-aos-delay="100">
-          <img src="images/blog/blog-header-image.jpg" class="img-fluid" alt="blog header">
+          <img src="alexaccesories/uploads/<?=explode('_', $allBlog['image'])[1]?>" class="img-fluid" alt="blog header">
           <div class="blog-header-info">
-            <h4 class="blog-category text-info">Creative</h4>
-            <h3><a href="blog-detail.php">The Key to Creative Work is Knowing When to Walk Away</a></h3>
+            <h4 class="blog-category text-info"><?=$allCat[0]['title'];?></h4>
+            <h3><a href="blog-detail.php?id=<?=$allBlog['id'];?>&title=<?=$allBlog['title'];?>"><?=$allBlog['title'];?></a></h3>
           </div>
         </div>
       </div>
       <div class="col-lg-5 col-md-5 col-12 mb-4">
         <?php 
+        $i=0;
         foreach($allCat as $cat){
+          if($i==0){
+            $i++;
+            continue;
+          }
           $catId = $cat['id'];
           $sqlBlog = "SELECT * FROM `blog_post` WHERE `category_id` = $catId ORDER BY `id` DESC LIMIT 1";
           $stmBlog = $dbConn->prepare($sqlBlog);
@@ -34,7 +46,7 @@
           <img src="alexaccesories/<?=$allBlog['image'];?>" class="img-fluid" alt="blog">
           <div class="blog-info">
             <h4 class="blog-category text-danger"><?=$cat['title'];?></h4>
-            <h3><a href="blog-detail.php"><?=$allBlog['title'];?></a></h3>
+            <h3><a href="blog-detail.php?id=<?=$allBlog['id'];?>&title=<?=$allBlog['title'];?>"><?=$allBlog['title'];?></a></h3>
           </div>
         </div>
       <?php } ?>

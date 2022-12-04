@@ -20,6 +20,10 @@ if(isset($_GET['cat'])&&$_GET['cat']!=''){
     $catId = $_GET['cat'];
     $sql .= " WHERE blog_categary.id = $catId";
 }
+if(isset($_GET['search-btn'])&&$_GET['search-btn']=='search'){
+    $search = $_GET['search'];
+    $sql .= " WHERE $tableName.title LIKE '%$search%' OR blog_categary.title LIKE '%$search%'";
+}
 $sqlPaginated = $sql . " LIMIT $limit OFFSET $offset"; 
 $stm = $dbConn->prepare($sqlPaginated);
 $stm->execute();
@@ -55,7 +59,6 @@ $totalPages = ceil($pagi->rowCount()/$limit);
                     </th>
         			<th>Title</th>
         			<th>Image</th>
-                    <th>Content</th>
                     <th>Created At</th>
                     <th>Action</th>
         		</tr>

@@ -52,9 +52,9 @@ if(isset($_SESSION['login_data'])&&$_SESSION['login_data'][0]['role']!='Admin'){
                   <a class="nav-link" href="logout.php">Logout</a>
                 </li>
               </ul>
-              <form class="d-flex">
-                <input class="form-control me-2" type="text" placeholder="Search">
-                <button class="btn btn-primary" type="button">Search</button>
+              <form class="d-flex" method="get">
+                <input class="form-control me-2" name="search" type="text" placeholder="Search">
+                <button class="btn btn-primary" name="search-btn" value="search" type="submit">Search</button>
               </form>
             </div>
           </div>
