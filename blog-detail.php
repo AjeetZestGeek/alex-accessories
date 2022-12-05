@@ -40,7 +40,8 @@ if(isset($_POST['submit-comment'])){
 }
 $blogId = $_GET['id'];
 $tableName = 'blog_post';
-$sql = "SELECT $tableName.id as blogId,$tableName.title as blogTitle, blog_categary.title as categoryTitle, content, image, $tableName.created_date as blogCratedDate, username FROM $tableName JOIN blog_categary ON $tableName.category_id = blog_categary.id JOIN users ON $tableName.created_by_id = users.id WHERE $tableName.id = ".$blogId;
+$sql = "SELECT $tableName.id as blogId,$tableName.title as blogTitle, bcat.title as categoryTitle, $tableName.content as blogContent, image, $tableName.created_date as blogCratedDate, username FROM $tableName JOIN blog_categary as bcat ON $tableName.category_id = bcat.id JOIN users ON $tableName.created_by_id = users.id WHERE $tableName.id = ".$blogId;
+// echo $sql;die;
 $stm = $dbConn->prepare($sql);
 $stm->execute();
 $data = $stm->fetchAll()[0];
@@ -55,7 +56,7 @@ $data = $stm->fetchAll()[0];
         <div class="client-info">
           <div class="d-flex justify-content-center align-items-center mt-3">
             <img src="images/project/project-detail/male-avatar.png" class="img-fluid" alt="male avatar">
-              <p>Sweet Candy</p>
+              <p><?=ucfirst($data['username']);?></p>
             </div>
           </div>
         </div>
@@ -71,8 +72,31 @@ $data = $stm->fetchAll()[0];
     <div class="row">
       <div class="col-lg-9 mx-auto col-md-11 col-12 my-5 pt-3" data-aos="fade-up">
         <h2 class="mb-3"><?=$data['categoryTitle']?></h2>
-        <p><?=$data['content']?></p>
+        <p><?=$data['blogContent']?></p>
       </div>
+    </div>
+    <div class="col-lg-8 mx-auto mb-5 pb-5 col-12">
+      <table class="table">
+        <tr>
+          <th>Sl no.</th>
+          <th>Feedback</th>
+          <th>Actions</th>
+        </tr>
+        <?php 
+          $sl = 1;
+          $sql = "SELECT * FROM blog_comment WHERE blog_id = $blogId";
+          $stm = $dbConn->prepare($sql);
+          $stm->execute();
+          $feedbacks = $stm->fetchAll();
+          foreach($feedbacks as $feedback){
+          ?>
+        <tr>
+          <td><?=$sl++;?></td>
+          <td><?=$feedback['content'];?></td>
+          <td><a class="btn btn-warning" href="?<?=$_SERVER['QUERY_STRING']?>&req=edit&comment_id=<?=$feedback['id'];?>">Edit</a>&nbsp;<a class="btn btn-danger" href="?<?=$_SERVER['QUERY_STRING']?>&req=delete&comment_id=<?=$feedback['id'];?>">Delete</a></td>
+        </tr>
+        <?php } ?>
+      </table>
     </div>
     <div class="col-lg-8 mx-auto mb-5 pb-5 col-12" data-aos="fade-up">
       <h3 class="my-3" data-aos="fade-up">Leave a comment</h3>
