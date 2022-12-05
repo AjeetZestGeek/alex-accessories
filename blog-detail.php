@@ -93,24 +93,33 @@ $data = $stm->fetchAll()[0];
         <tr>
           <td><?=$sl++;?></td>
           <td><?=$feedback['content'];?></td>
-          <td><a class="btn btn-warning" href="?<?=$_SERVER['QUERY_STRING']?>&req=edit&comment_id=<?=$feedback['id'];?>">Edit</a>&nbsp;<a class="btn btn-danger" href="?<?=$_SERVER['QUERY_STRING']?>&req=delete&comment_id=<?=$feedback['id'];?>">Delete</a></td>
+          <td><a class="btn btn-warning" href="?<?=$_SERVER['QUERY_STRING']?>&req=edit&comment_id=<?=$feedback['id'];?>">Edit</a></td>
         </tr>
         <?php } ?>
       </table>
     </div>
+    <?php 
+    if(isset($_GET['comment_id'])){
+      $commetId = $_GET['comment_id'];
+      $sql = "SELECT * FROM blog_comment WHERE id = $commetId";
+      $stm = $dbConn->prepare($sql);
+      $stm->execute();
+      $feedback = $stm->fetchAll()[0];
+    }
+    ?>
     <div class="col-lg-8 mx-auto mb-5 pb-5 col-12" data-aos="fade-up">
       <h3 class="my-3" data-aos="fade-up">Leave a comment</h3>
       <form action="#" method="post"  class="contact-form" data-aos="fade-up" data-aos-delay="300" role="form">
         <input type="hidden" name="post-id" value="<?=$_GET['id']?>">
         <div class="row">
           <div class="col-lg-6 col-12">
-            <input type="text" class="form-control" name="name" placeholder="Name">
+            <input type="text" class="form-control" name="name" placeholder="Name" value="<?=isset($feedback['name'])?$feedback['name']:''?>">
           </div>
           <div class="col-lg-6 col-12">
-            <input type="email" class="form-control" name="email" placeholder="Email">
+            <input type="email" class="form-control" name="email" placeholder="Email" value="<?=isset($feedback['email'])?$feedback['email']:''?>">
           </div>
           <div class="col-lg-12 col-12">
-            <textarea class="form-control" rows="6" name="message" placeholder="Message"></textarea>
+            <textarea class="form-control" rows="6" name="message" placeholder="Message"><?=isset($feedback['message'])?$feedback['message']:''?></textarea>
           </div>
           <div class="col-lg-6 col-12">
             <input type="text" class="form-control" name="captcha" id="captcha" placeholder="Enter Captcha">
@@ -126,7 +135,7 @@ $data = $stm->fetchAll()[0];
             </div>
           <?php }?>
           <div class="col-lg-5 mx-auto col-7">
-            <button type="submit" class="form-control" id="submit-button" name="submit-comment">Submit Comment</button>
+            <button type="submit" class="form-control" id="submit-button" name="submit-comment" vale<?=isset($_GET['comment_id'])?'update':'submit'?>><?=isset($_GET['comment_id'])?'Update Comment':'Submit Comment'?></button>
           </div>
         </div>
       </form>
