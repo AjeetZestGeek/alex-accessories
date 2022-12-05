@@ -4,6 +4,10 @@ include 'alexaccesories/functions.php';
 if(!isset($_SESSION)){
     session_start();
 }
+if(isset($_SESSION['login_data'])){
+  $userdata = $_SESSION['login_data'][0];
+  $userId = $userdata['id'];
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
