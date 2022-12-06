@@ -15,20 +15,28 @@ if(isset($_POST['submit-comment'])){
     );
   }
   else if($_SESSION['CAPTCHA_CODE'] == $captchaUser){
-    $captchaError = array(
-      "status" => "alert-success",
-      "message" => "Your form has been submitted successfuly."
-    );
-    $sql = "INSERT INTO blog_comment (blog_id,name,email,content,";
-    if(isset($userId)){
-      $sql .= "created_by_id,";
+    if($_POST['submit-comment']=='submit'){
+      $sql = "INSERT INTO blog_comment (blog_id,name,email,content,";
+      if(isset($userId)){
+        $sql .= "created_by_id,";
+      }
+      $sql .= "created_date) VALUES ($postId,'$name','$email','$message',";
+      if(isset($userId)){
+        $sql .= "$userId,";
+      }
+      $date = date('Y-m-d h:i:s');
+      $sql .= "'$date')";
+      $captchaError = array(
+        "status" => "alert-success",
+        "message" => "Comment added successfuly."
+      );
+    }else if($_POST['submit-comment']=='update'){
+      $sql = "UPDATE blog_comment set name = '$name',email='$email',content='$message' WHERE id = ".$_GET['comment_id'];
+      $captchaError = array(
+        "status" => "alert-success",
+        "message" => "Comment updated successfuly."
+      );
     }
-    $sql .= "created_date) VALUES ($postId,'$name','$email','$message',";
-    if(isset($userId)){
-      $sql .= "$userId,";
-    }
-    $date = date('Y-m-d h:i:s');
-    $sql .= "'$date')";
     $stm = $dbConn->prepare($sql);
     $stm->execute();
   } else {
@@ -93,7 +101,11 @@ $data = $stm->fetchAll()[0];
         <tr>
           <td><?=$sl++;?></td>
           <td><?=$feedback['content'];?></td>
+          <?php 
+          if(isset($userId)&&$userId==$feedback['created_by_id']){
+          ?>
           <td><a class="btn btn-warning" href="?<?=$_SERVER['QUERY_STRING']?>&req=edit&comment_id=<?=$feedback['id'];?>">Edit</a></td>
+          <?php } ?>
         </tr>
         <?php } ?>
       </table>
@@ -119,7 +131,7 @@ $data = $stm->fetchAll()[0];
             <input type="email" class="form-control" name="email" placeholder="Email" value="<?=isset($feedback['email'])?$feedback['email']:''?>">
           </div>
           <div class="col-lg-12 col-12">
-            <textarea class="form-control" rows="6" name="message" placeholder="Message"><?=isset($feedback['message'])?$feedback['message']:''?></textarea>
+            <textarea class="form-control" rows="6" name="message" placeholder="Message"><?=isset($feedback['content'])?$feedback['content']:''?></textarea>
           </div>
           <div class="col-lg-6 col-12">
             <input type="text" class="form-control" name="captcha" id="captcha" placeholder="Enter Captcha">
@@ -135,7 +147,7 @@ $data = $stm->fetchAll()[0];
             </div>
           <?php }?>
           <div class="col-lg-5 mx-auto col-7">
-            <button type="submit" class="form-control" id="submit-button" name="submit-comment" vale<?=isset($_GET['comment_id'])?'update':'submit'?>><?=isset($_GET['comment_id'])?'Update Comment':'Submit Comment'?></button>
+            <button type="submit" class="form-control" id="submit-button" name="submit-comment" value<?=isset($_GET['comment_id'])?'update':'submit'?>><?=isset($_GET['comment_id'])?'Update Comment':'Submit Comment'?></button>
           </div>
         </div>
       </form>
