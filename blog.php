@@ -40,7 +40,12 @@
           $sqlBlog = "SELECT * FROM `blog_post` WHERE `category_id` = $catId ORDER BY `id` DESC LIMIT 1";
           $stmBlog = $dbConn->prepare($sqlBlog);
           $stmBlog->execute();
-          $allBlog = $stmBlog->fetchAll()[0];
+          $allBlog = $stmBlog->fetchAll();
+          if(!empty($allBlog)){
+            $allBlog = $allBlog[0];
+          }else{
+            continue;
+          }
         ?>
         <div class="blog-sidebar d-flex justify-content-center align-items-center" data-aos="fade-up" data-aos-delay="200">
           <img src="alexaccesories/<?=$allBlog['image'];?>" class="img-fluid" alt="blog">
