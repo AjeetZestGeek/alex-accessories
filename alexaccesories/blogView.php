@@ -10,8 +10,11 @@ $data = $stm->fetchAll()[0];
 <div class="main">
 	<div class="row main-heading">
 		<div class="col-lg-6 col-md-6 col-sm-12 container">
-			<img class="blog-image" src="uploads/<?=explode('_', $data['image'])[1]?>">
-			<button class="btn btn-danger main-heading" value="<?=$data['image'];?>" onclick="confirm('Are you sure to delete?')">Delete</button>
+			<?php 
+			$image = 'uploads/'.explode('_', $data['image'])[1];
+			?>
+			<img class="blog-image" src="<?=$image?>">
+			<button class="btn btn-danger main-heading" id="alex-image-delete" value="<?=$data['image'];?>" onclick="confirm('Are you sure to delete?')">Delete</button>
 		</div>
 		<div class="col-lg-6 col-md-6 col-sm-12">
 			<div class="right-item">
@@ -34,3 +37,21 @@ $data = $stm->fetchAll()[0];
 <?php 
 include 'layout/footer.php';
 ?>
+<script type="text/javascript">
+	$(document).ready(function(){
+		$('#alex-image-delete').click(function(){
+ 			var thumb = '<?=$data['image'];?>';
+	   		var image = '<?=$image;?>';
+	   		$.post("ajax/remove_image.php",
+		    {
+		        'thumb':thumb,
+		        'image':image
+		    },function(data,status){
+		        if(status='success'){
+		            console.log('Image Removed');
+		            window.location.href = "blogView.php?id="+"<?=$_GET['id']?>"+"&title="+"<?=$_GET['title']?>";
+		        }
+		    });
+ 		});
+	});
+</script>

@@ -37,7 +37,7 @@ if (isset($_POST['save'])) {
     $allDone = false;
   }
   if($allDone){
-    $password = saltPassword(sha1($password));
+    $password = password_hash($password);
     $stm = $dbConn->prepare("SELECT * FROM users where username=? OR emailaddress=? OR phonenumber=?");
     $stm->execute([$username,$emailaddress,$phonenumber]);
     if($stm->rowCount()>0){

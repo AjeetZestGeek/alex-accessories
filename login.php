@@ -15,11 +15,11 @@ if(isset($_POST['login'])){
     $allDone = false;
   }
   if($allDone){
-    $password = saltPassword(sha1($password));
-    $stm = $dbConn->prepare("SELECT * FROM users WHERE (username = ? OR emailaddress = ?) AND password = ?");
-    $stm->execute([$username,$username,$password]);
-    if($stm->rowCount()>0){
-      $_SESSION['login_data'] = $stm->fetchAll();
+    $stm = $dbConn->prepare("SELECT * FROM users WHERE (username = ? OR emailaddress = ?)");
+    $stm->execute([$username,$username]);
+    $data = $stm->fetchAll();
+    if(password_verify($password, $data[0]['password'])){
+      $_SESSION['login_data'] = $data;
       if($_SESSION['login_data'][0]['role']=='Admin'){
         echo"<script>document.location='alexaccesories/index.php';</script>";
       }else{
