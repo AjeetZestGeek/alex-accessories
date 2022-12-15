@@ -26,19 +26,21 @@ if(isset($_POST['submit-comment'])){
       }
       $date = date('Y-m-d h:i:s');
       $sql .= "'$date')";
+      $stm = $dbConn->prepare($sql);
+      $stm->execute();
       $captchaError = array(
         "status" => "alert-success",
         "message" => "Comment added successfuly."
       );
     }else if($_POST['submit-comment']=='update'){
       $sql = "UPDATE blog_comment set name = '$name',email='$email',content='$message' WHERE id = ".$_GET['comment_id'];
+      $stm = $dbConn->prepare($sql);
+      $stm->execute();
       $captchaError = array(
         "status" => "alert-success",
         "message" => "Comment updated successfuly."
       );
     }
-    $stm = $dbConn->prepare($sql);
-    $stm->execute();
   } else {
     $captchaError = array(
       "status" => "alert-danger",
@@ -121,7 +123,7 @@ $data = $stm->fetchAll()[0];
     ?>
     <div class="col-lg-8 mx-auto mb-5 pb-5 col-12" data-aos="fade-up">
       <h3 class="my-3" data-aos="fade-up">Leave a comment</h3>
-      <form action="#" method="post"  class="contact-form" data-aos="fade-up" data-aos-delay="300" role="form">
+      <form action="" method="post"  class="contact-form" data-aos="fade-up" data-aos-delay="300" role="form">
         <input type="hidden" name="post-id" value="<?=$_GET['id']?>">
         <div class="row">
           <div class="col-lg-6 col-12">
@@ -147,7 +149,7 @@ $data = $stm->fetchAll()[0];
             </div>
           <?php }?>
           <div class="col-lg-5 mx-auto col-7">
-            <button type="submit" class="form-control" id="submit-button" name="submit-comment" value<?=isset($_GET['comment_id'])?'update':'submit'?>><?=isset($_GET['comment_id'])?'Update Comment':'Submit Comment'?></button>
+            <button type="submit" class="form-control" id="submit-button" name="submit-comment" value="<?=isset($_GET['comment_id'])?'update':'submit'?>"><?=isset($_GET['comment_id'])?'Update Comment':'Submit Comment'?></button>
           </div>
         </div>
       </form>
